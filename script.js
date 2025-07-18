@@ -1,33 +1,28 @@
 function baixar(tipo) {
-  const url = document.getElementById("url").value;
-  const progress = document.getElementById("progress");
-  if (!url) return alert("Por favor, insira uma URL.");
+    const url = document.getElementById("url").value;
+    const status = document.getElementById("status");
 
-  progress.style.display = 'block';
+    if (!url) {
+        status.innerText = "Por favor, insira uma URL.";
+        return;
+    }
 
-  fetch("/download", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ url: url, tipo: tipo })
-  })
-  .then(response => {
-    if (!response.ok) throw new Error("Erro ao baixar o arquivo");
-    return response.blob();
-  })
-  .then(blob => {
-    const link = document.createElement("a");
-    link.href = window.URL.createObjectURL(blob);
-    link.download = tipo === "audio" ? "audio.mp3" : "video.mp4";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  })
-  .catch(error => {
-    alert("Erro: " + error.message);
-  })
-  .finally(() => {
-    progress.style.display = 'none';
-  });
+    status.innerText = "Iniciando download...";
+
+    fetch("/baixar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url, tipo })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === "sucesso") {
+            status.innerText = `Download concluído: ${data.arquivo}`;
+        } else {
+            status.innerText = "Erro: " + data.mensagem;
+        }
+    })
+    .catch(err => {
+        status.innerText = "Erro: " + err.message;
+    });
 }
