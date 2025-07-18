@@ -1,28 +1,20 @@
-function baixar(tipo) {
-    const url = document.getElementById("url").value;
-    const status = document.getElementById("status");
+function baixar() {
+    const url = document.getElementById('url').value;
+    const tipo = document.getElementById('tipo').value;
 
-    if (!url) {
-        status.innerText = "Por favor, insira uma URL.";
-        return;
-    }
+    const form = new FormData();
+    form.append('url', url);
+    form.append('tipo', tipo);
 
-    status.innerText = "Iniciando download...";
-
-    fetch("/baixar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url, tipo })
+    fetch('/download', {
+        method: 'POST',
+        body: form
     })
-    .then(res => res.json())
-    .then(data => {
-        if (data.status === "sucesso") {
-            status.innerText = `Download concluído: ${data.arquivo}`;
-        } else {
-            status.innerText = "Erro: " + data.mensagem;
-        }
-    })
-    .catch(err => {
-        status.innerText = "Erro: " + err.message;
+    .then(response => response.blob())
+    .then(blob => {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = tipo === 'audio' ? 'audio.mp4' : 'video.mp4';
+        link.click();
     });
 }
