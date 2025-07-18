@@ -4,6 +4,12 @@ import os
 import tempfile
 import uuid
 
+from flask import render_template
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
 app = Flask(__name__)
 
 @app.route("/download", methods=["POST"])
