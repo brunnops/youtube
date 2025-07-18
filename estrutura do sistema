@@ -1,0 +1,16 @@
+estrutura do sistema
+
+yt-downloader/
+│
+├── backend/
+│   ├── app.py                  # Código Python com Flask ou FastAPI
+│   ├── requirements.txt        # Lista de pacotes (ex: flask, pytube)
+│
+├── frontend/
+│   ├── index.html              # Página principal
+│   ├── script.js               # Código JS para enviar requisições
+│   ├── style.css               # Estilo opcional
+│
+├── .gitignore                  # Ignorar __pycache__, etc.
+├── README.md                   # Explicando como usar o projeto
+
