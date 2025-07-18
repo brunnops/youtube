@@ -1,31 +1,11 @@
 body {
+    background: #121212;
+    color: white;
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
     text-align: center;
-    padding-top: 50px;
+    margin-top: 100px;
 }
-
-.container {
-    background: white;
-    padding: 20px;
-    width: 400px;
-    margin: 0 auto;
-    border-radius: 10px;
-    box-shadow: 0 0 10px #ccc;
-}
-
-input[type="text"] {
-    width: 90%;
+input, select, button {
     padding: 10px;
-    margin-bottom: 15px;
-}
-
-button {
-    padding: 10px 15px;
-    margin: 5px;
-    cursor: pointer;
-}
-
-#status {
-    margin-top: 15px;
+    margin: 10px;
 }
