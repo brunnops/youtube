@@ -1,60 +1,32 @@
-from flask import Flask, request, send_file, jsonify
-from yt_dlp import YoutubeDL
+from flask import Flask, render_template, request, jsonify
+from pytube import YouTube
 import os
-import tempfile
-import uuid
-
-from flask import render_template
-
-@app.route("/")
-def index():
-    return render_template("index.html")
 
 app = Flask(__name__)
 
-@app.route("/download", methods=["POST"])
-def download():
-    data = request.get_json()
-    url = data.get("url")
-    tipo = data.get("tipo")  # "audio" ou "video"
+@app.route('/')
+def home():
+    return render_template('index.html')
 
-    if not url or tipo not in ["audio", "video"]:
-        return jsonify({"error": "Requisição inválida"}), 400
+@app.route('/baixar', methods=['POST'])
+def baixar():
+    data = request.json
+    url = data.get('url')
+    tipo = data.get('tipo')  # 'audio' ou 'video'
 
     try:
-        temp_dir = tempfile.mkdtemp()
-        output_template = os.path.join(temp_dir, f"%(title)s-{uuid.uuid4().hex}.%(ext)s")
+        yt = YouTube(url)
+        if tipo == 'audio':
+            stream = yt.streams.filter(only_audio=True).first()
+            nome_arquivo = yt.title + ".mp3"
+        else:
+            stream = yt.streams.get_highest_resolution()
+            nome_arquivo = yt.title + ".mp4"
 
-        if tipo == "audio":
-            ydl_opts = {
-                "format": "bestaudio/best",
-                "outtmpl": output_template,
-                "postprocessors": [{
-                    "key": "FFmpegExtractAudio",
-                    "preferredcodec": "mp3",
-                    "preferredquality": "192",
-                }],
-                "ffmpeg_location": "ffmpeg.exe"
-            }
-        else:  # vídeo
-            ydl_opts = {
-                "format": "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
-                "merge_output_format": "mp4",
-                "outtmpl": output_template,
-                "ffmpeg_location": "ffmpeg.exe"
-            }
-
-        with YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(url, download=True)
-            filename = ydl.prepare_filename(info)
-            if tipo == "audio":
-                filename = os.path.splitext(filename)[0] + ".mp3"
-
-        return send_file(filename, as_attachment=True)
-
+        stream.download(filename=nome_arquivo)
+        return jsonify({'status': 'sucesso', 'arquivo': nome_arquivo})
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({'status': 'erro', 'mensagem': str(e)})
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)
