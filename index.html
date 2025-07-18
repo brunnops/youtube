@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <title>Downloader de YouTube</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+    <meta charset="UTF-8">
+    <title>Downloader de YouTube</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <div class="container">
-    <h2>Downloader de YouTube</h2>
-    <input type="text" id="url" placeholder="Cole a URL do vídeo aqui..." />
-    <div>
-      <button onclick="baixar('video')">Baixar Vídeo</button>
-      <button onclick="baixar('audio')">Baixar Áudio</button>
+    <div class="container">
+        <h1>Baixar do YouTube</h1>
+        <input type="text" id="url" placeholder="Cole a URL do vídeo aqui">
+        <div class="buttons">
+            <button onclick="baixar('audio')">Baixar Áudio</button>
+            <button onclick="baixar('video')">Baixar Vídeo</button>
+        </div>
+        <div id="status"></div>
     </div>
-    <div class="progress" id="progress">Baixando... Aguarde</div>
-  </div>
-
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
