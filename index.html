@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>YT Downloader</title>
+    <title>Downloader de YouTube</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Downloader YouTube</h1>
-        <input type="text" id="url" placeholder="Cole a URL do vídeo">
-        <select id="tipo">
-            <option value="video">Vídeo</option>
-            <option value="audio">Áudio</option>
-        </select>
-        <button onclick="baixar()">Baixar</button>
+        <h1>Download de YouTube</h1>
+        <input type="text" id="url" placeholder="Cole o link do vídeo aqui">
+        <div class="botoes">
+            <button id="baixar-audio">Baixar Áudio</button>
+            <button id="baixar-video">Baixar Vídeo</button>
+        </div>
+        <p id="progresso"></p>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
