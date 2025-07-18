@@ -1,20 +1,33 @@
-function baixar() {
-    const url = document.getElementById('url').value;
-    const tipo = document.getElementById('tipo').value;
+document.addEventListener('DOMContentLoaded', () => {
+    const botaoAudio = document.getElementById('baixar-audio');
+    const botaoVideo = document.getElementById('baixar-video');
+    const input = document.getElementById('url');
+    const progresso = document.getElementById('progresso');
 
-    const form = new FormData();
-    form.append('url', url);
-    form.append('tipo', tipo);
+    function baixar(tipo) {
+        const url = input.value;
+        progresso.textContent = 'Iniciando download...';
 
-    fetch('/download', {
-        method: 'POST',
-        body: form
-    })
-    .then(response => response.blob())
-    .then(blob => {
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = tipo === 'audio' ? 'audio.mp4' : 'video.mp4';
-        link.click();
-    });
-}
+        fetch('/download', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ url, tipo })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.mensagem) {
+                progresso.textContent = data.mensagem;
+            } else if (data.erro) {
+                progresso.textContent = "Erro: " + data.erro;
+            }
+        })
+        .catch(error => {
+            progresso.textContent = "Erro inesperado: " + error;
+        });
+    }
+
+    botaoAudio.addEventListener('click', () => baixar('audio'));
+    botaoVideo.addEventListener('click', () => baixar('video'));
+});
