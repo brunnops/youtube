@@ -1,11 +1,40 @@
 body {
-    background: #121212;
-    color: white;
     font-family: Arial, sans-serif;
+    background-color: #fafafa;
     text-align: center;
-    margin-top: 100px;
+    padding: 50px;
 }
-input, select, button {
+
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    display: inline-block;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+input {
+    width: 300px;
     padding: 10px;
-    margin: 10px;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: #3498db;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+#progresso {
+    margin-top: 20px;
+    font-weight: bold;
+    color: green;
 }
